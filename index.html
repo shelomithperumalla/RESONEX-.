@@ -6,6 +6,235 @@
 <title>RESONEX</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
+<style>
+/* Search Bar Styles */
+.search-container {
+  margin: 32px 0;
+  position: relative;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 16px 56px 16px 20px;
+  background: var(--bg2);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  color: var(--text1);
+  font-size: 16px;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+}
+
+.search-bar::placeholder {
+  color: var(--text3);
+}
+
+.search-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3); /* Uses your existing variable */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon svg {
+  display: block;
+  opacity: 0.6; /* Matches the subtle look of the UI */
+  transition: color 0.3s ease;
+}
+
+/* Optional: Make the icon light up when the bar is focused */
+.search-bar:focus + .search-icon {
+  color: var(--accent1);
+}
+
+.search-results {
+  margin-top: 32px;
+  display: none;
+}
+
+.search-results.active {
+  display: block;
+}
+
+.search-category {
+  margin-bottom: 32px;
+}
+
+.search-category-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text1);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-category-count {
+  font-size: 14px;
+  color: var(--text3);
+  font-weight: 400;
+}
+
+.search-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text2);
+  display: none;
+}
+
+.search-empty.active {
+  display: block;
+}
+
+.search-empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.search-empty-text {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Artist Search Results */
+.artist-search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.artist-search-card {
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.artist-search-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.artist-search-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.artist-search-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artist-search-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text1);
+}
+
+/* Playlist Search Results */
+.playlist-search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.playlist-search-card {
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.playlist-search-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.playlist-search-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.playlist-search-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playlist-search-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.playlist-search-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text1);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-search-count {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.default-content {
+  display: block;
+}
+
+.default-content.hidden {
+  display: none;
+}
+</style>
 </head>
 <body>
 
@@ -14,6 +243,7 @@
   <a href="index.html" class="logo">RESONEX<span></span></a>
   <div class="nav-pills">
     <a href="index.html"     class="nav-pill active">Home</a>
+    <a href="songs.html"     class="nav-pill">Songs</a>
     <a href="trending.html"  class="nav-pill">Trending</a>
     <a href="playlists.html" class="nav-pill">Playlists</a>
     <a href="artists.html"   class="nav-pill">Artists</a>
@@ -29,26 +259,82 @@
     <div class="hero-content">
       <div class="hero-tag">✦ Featured Today</div>
       <div class="hero-title">Discover Your<br/>Next Favorite</div>
-      <div class="hero-sub">Curated mixes, trending hits, and fresh picks — all in one place.</div>
+      <div class="hero-sub">Curated mixes, trending hits, and fresh picks – all in one place.</div>
       <a href="trending.html" class="hero-btn">▶ &nbsp;Explore Now</a>
     </div>
   </div>
 
-  <!-- Browse Categories -->
-  <div class="section-head">
-    <span class="section-title">Browse Categories</span>
-  </div>
-  <div class="cat-grid" id="catGrid">
-    <!-- filled by JS -->
+  <!-- Search Bar -->
+  <div class="search-container">
+  <input 
+    type="text" 
+    class="search-bar" 
+    id="searchBar" 
+    placeholder="Search for songs, artists, or playlists..."
+    autocomplete="off"
+  />
+  <span class="search-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </span>
+</div>
+
+  <!-- Search Results -->
+  <div class="search-results" id="searchResults">
+    <!-- Songs -->
+    <div class="search-category" id="searchSongs" style="display: none;">
+      <div class="search-category-title">
+        Songs
+        <span class="search-category-count" id="songCount"></span>
+      </div>
+      <div class="song-row" id="searchSongList"></div>
+    </div>
+
+    <!-- Artists -->
+    <div class="search-category" id="searchArtists" style="display: none;">
+      <div class="search-category-title">
+        Artists
+        <span class="search-category-count" id="artistCount"></span>
+      </div>
+      <div class="artist-search-grid" id="searchArtistList"></div>
+    </div>
+
+    <!-- Playlists -->
+    <div class="search-category" id="searchPlaylists" style="display: none;">
+      <div class="search-category-title">
+        Playlists
+        <span class="search-category-count" id="playlistCount"></span>
+      </div>
+      <div class="playlist-search-grid" id="searchPlaylistList"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="search-empty" id="searchEmpty">
+      <div class="search-empty-icon">🔍</div>
+      <div class="search-empty-text">No results found</div>
+    </div>
   </div>
 
-  <!-- Trending Preview -->
-  <div class="section-head">
-    <span class="section-title">Trending Now</span>
-    <a href="trending.html" class="section-see">See All →</a>
-  </div>
-  <div class="song-row" id="homeTrending">
-    <!-- filled by JS -->
+  <!-- Default Content (shown when not searching) -->
+  <div class="default-content" id="defaultContent">
+    <!-- Browse Categories -->
+    <div class="section-head">
+      <span class="section-title">Browse Categories</span>
+    </div>
+    <div class="cat-grid" id="catGrid">
+      <!-- filled by JS -->
+    </div>
+
+    <!-- Trending Preview -->
+    <div class="section-head">
+      <span class="section-title">Trending Now</span>
+      <a href="trending.html" class="section-see">See All →</a>
+    </div>
+    <div class="song-row" id="homeTrending">
+      <!-- filled by JS -->
+    </div>
   </div>
 
 </div><!-- end page-body -->
@@ -73,7 +359,7 @@
 <!-- ─── SCRIPTS ─── -->
 <script src="data.js"></script>
 <script>
-// ─── BUILD CATEGORY CARDS ─────────────────────────────
+// ─── BUILD CATEGORY CARDS ──────────────────────────────────
 (function renderCatCards() {
   const grid = document.getElementById('catGrid');
   DATA.categories.forEach(c => {
@@ -116,7 +402,7 @@
   });
 })();
 
-// ─── BUILD TRENDING PREVIEW (top 5) ───────────────────
+// ─── BUILD TRENDING PREVIEW (top 5) ───────────────────────
 (function renderTrending() {
   const row = document.getElementById('homeTrending');
   const trending = DATA.songs.filter(s => s.cat.includes('trending')).slice(0, 5);
@@ -126,7 +412,7 @@
   highlightActiveSong();
 })();
 
-// ─── SHARED SONG-ITEM BUILDER ─────────────────────────
+// ─── SHARED SONG-ITEM BUILDER ─────────────────────────────
 function buildSongItem(song, rank) {
   const div          = document.createElement('div');
   div.className      = 'song-item';
@@ -151,7 +437,160 @@ function buildSongItem(song, rank) {
   return div;
 }
 
-// ─── INIT mini player state on page load ──────────────
+// ═══════════════════════════════════════════════════════════
+//  SEARCH FUNCTIONALITY
+// ═══════════════════════════════════════════════════════════
+
+const searchBar = document.getElementById('searchBar');
+const searchResults = document.getElementById('searchResults');
+const defaultContent = document.getElementById('defaultContent');
+const searchEmpty = document.getElementById('searchEmpty');
+
+// Search input handler with debouncing
+let searchTimeout;
+searchBar.addEventListener('input', function(e) {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    performSearch(e.target.value.trim());
+  }, 300);
+});
+
+function performSearch(query) {
+  // If query is empty, show default content
+  if (!query) {
+    searchResults.classList.remove('active');
+    defaultContent.classList.remove('hidden');
+    return;
+  }
+
+  // Hide default content, show search results
+  defaultContent.classList.add('hidden');
+  searchResults.classList.add('active');
+
+  const lowerQuery = query.toLowerCase();
+
+  // Search songs
+  const matchingSongs = DATA.songs.filter(song => 
+    song.title.toLowerCase().includes(lowerQuery) ||
+    song.artist.toLowerCase().includes(lowerQuery)
+  );
+
+  // Search artists
+  const matchingArtists = DATA.artists.filter(artist =>
+    artist.name.toLowerCase().includes(lowerQuery) ||
+    artist.bio.toLowerCase().includes(lowerQuery)
+  );
+
+  // Search playlists
+  const matchingPlaylists = DATA.playlists.filter(playlist =>
+    playlist.name.toLowerCase().includes(lowerQuery) ||
+    playlist.description.toLowerCase().includes(lowerQuery)
+  );
+
+  // Display results
+  displaySearchResults(matchingSongs, matchingArtists, matchingPlaylists);
+}
+
+function displaySearchResults(songs, artists, playlists) {
+  const hasResults = songs.length > 0 || artists.length > 0 || playlists.length > 0;
+
+  // Show/hide empty state
+  searchEmpty.classList.toggle('active', !hasResults);
+
+  // Display songs
+  const searchSongs = document.getElementById('searchSongs');
+  const searchSongList = document.getElementById('searchSongList');
+  const songCount = document.getElementById('songCount');
+  
+  searchSongList.innerHTML = '';
+  if (songs.length > 0) {
+    searchSongs.style.display = 'block';
+    songCount.textContent = `(${songs.length})`;
+    songs.forEach((song, i) => {
+      searchSongList.appendChild(buildSongItem(song, i + 1));
+    });
+    highlightActiveSong();
+  } else {
+    searchSongs.style.display = 'none';
+  }
+
+  // Display artists
+  const searchArtists = document.getElementById('searchArtists');
+  const searchArtistList = document.getElementById('searchArtistList');
+  const artistCount = document.getElementById('artistCount');
+  
+  searchArtistList.innerHTML = '';
+  if (artists.length > 0) {
+    searchArtists.style.display = 'block';
+    artistCount.textContent = `(${artists.length})`;
+    artists.forEach(artist => {
+      searchArtistList.appendChild(buildArtistSearchCard(artist));
+    });
+  } else {
+    searchArtists.style.display = 'none';
+  }
+
+  // Display playlists
+  const searchPlaylists = document.getElementById('searchPlaylists');
+  const searchPlaylistList = document.getElementById('searchPlaylistList');
+  const playlistCount = document.getElementById('playlistCount');
+  
+  searchPlaylistList.innerHTML = '';
+  if (playlists.length > 0) {
+    searchPlaylists.style.display = 'block';
+    playlistCount.textContent = `(${playlists.length})`;
+    playlists.forEach(playlist => {
+      searchPlaylistList.appendChild(buildPlaylistSearchCard(playlist));
+    });
+  } else {
+    searchPlaylists.style.display = 'none';
+  }
+}
+
+function buildArtistSearchCard(artist) {
+  const card = document.createElement('a');
+  card.className = 'artist-search-card';
+  card.href = `artist-detail.html?id=${artist.id}`;
+  
+  let imageHTML;
+  if (artist.image) {
+    imageHTML = `<img src="${artist.image}" alt="${artist.name}">`;
+  } else {
+    imageHTML = artist.emoji;
+  }
+  
+  card.innerHTML = `
+    <div class="artist-search-image">${imageHTML}</div>
+    <div class="artist-search-name">${artist.name}</div>
+  `;
+  
+  return card;
+}
+
+function buildPlaylistSearchCard(playlist) {
+  const card = document.createElement('a');
+  card.className = 'playlist-search-card';
+  card.href = `playlists-detail.html?id=${playlist.id}`;
+  
+  let coverHTML;
+  if (playlist.cover) {
+    coverHTML = `<img src="${playlist.cover}" alt="${playlist.name}">`;
+  } else {
+    coverHTML = playlist.emoji;
+  }
+  
+  card.innerHTML = `
+    <div class="playlist-search-cover">${coverHTML}</div>
+    <div class="playlist-search-info">
+      <div class="playlist-search-name">${playlist.name}</div>
+      <div class="playlist-search-count">${playlist.songs.length} songs</div>
+    </div>
+  `;
+  
+  return card;
+}
+
+// ─── INIT mini player state on page load ──────────────────
 syncMiniPlayer();
 highlightActiveSong();
 </script>
